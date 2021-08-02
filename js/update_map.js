@@ -96,6 +96,6 @@ function update_map() {
         .attr('y', d => projection([d.data['lon'], d.data['lat']])[1] + (radius(d.data['chla']) / Math.sqrt(2)) + d.dy + (0.04 * height))
         .attr('width', (0.24 * width))
         .attr('height', (0.24 * height))
-        .attr('xlink:href', '/img/binder_lake_iowa.jpeg');
+        .attr('xlink:href', 'img/binder_lake_iowa.jpeg');
 }
 

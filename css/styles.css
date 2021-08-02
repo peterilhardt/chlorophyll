@@ -3,7 +3,7 @@ circle {
     stroke: black;
 }
 body {
-    background-image: url("/img/lake_erie_bloom.png");
+    background-image: url("img/lake_erie_bloom.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
