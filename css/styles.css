@@ -1,0 +1,31 @@
+circle {
+    fill: lightblue; 
+    stroke: black;
+}
+body {
+    background-image: url("/img/lake_erie_bloom.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: rgba(255, 255, 255, 0.3);
+    background-blend-mode: overlay;
+}
+#scatterplot_tooltip {
+    opacity: 0;
+    position: absolute;
+    text-align: center;
+    width: 60px; height: 40px;
+    background: white;
+    border: 0px;
+}
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+    filter: invert(100%);
+    height: 40px;
+    width: 40px;
+}
+.carousel-indicators {
+    filter: invert(100%);
+    margin: -25px;
+}
+

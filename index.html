@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>The Chlorophyll Crisis</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>  <!--D3-->
+    <script src="https://unpkg.com/topojson-client@3"></script>  <!--TopoJSON-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
+
+	<!--Bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body onload='init()'>
+
+<div id="slideshow" class="carousel slide" data-interval="false">
+    <ol class="carousel-indicators">
+        <li data-target="#slideshow" data-slide-to="0" class="active"></li>
+        <li data-target="#slideshow" data-slide-to="1"></li>
+        <li data-target="#slideshow" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <h1><i>What Causes Algal Blooms?</i></h1>
+                    </div>
+                    <div class="col-6">
+                        <label for="xvar"><b>Choose a feature:</b></label><br>
+                        <select name="xvar" id="xvar" class="form-select">
+                            <option value="Total Phosphorus (mg/L)" selected>Total Phosphorus</option>
+                            <option value="Total Nitrogen (mg/L)">Total Nitrogen</option>
+                            <option value="Dissolved Organic Carbon (mg/L)">Dissolved Organic Carbon</option>
+                            <option value="Dissolved Oxygen (mg/L)">Dissolved Oxygen</option>
+                            <option value="Lake Volume (m3)">Lake Volume</option>
+                            <option value="Lake Surface Area (km2)">Lake Surface Area</option>
+                            <option value="Maximum Lake Depth (m)">Maximum Lake Depth</option>
+                            <option value="Maximum Secchi Depth Visibility (m)">Maximum Secchi Depth Visibility from Surface</option>
+                            <option value="pH">pH</option>
+                        </select>
+                    </div>
+                </div>
+				<div class="row">
+					<div class="col-12">
+						<p class="text-justify text-left text-wrap font-italic font-weight-bold">
+							Algal blooms are caused by excessive growth of algae (primarily cyanobacteria) in surface waters in response 
+							to massive inputs of nutrients such as nitrogen and phosphorus, typically sourced by human activites such as 
+							fertilizer runoff. High concentrations of chlorophyll in the cells of these photosynthetic organisms turn the 
+							water green or turquoise and allow us to chemically gauge the extent of each bloom. Note the strong correlations 
+							between chlorophyll and other biochemical constituents such as nitrogen, phosphorus, and organic carbon, as well 
+							as the strong negative correlation with maximum Secchi depth visibility (an indicator of water visibility).
+						</p>
+					</div>
+				</div>
+			</div>
+            <div class="container-fluid">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-12" align="center">
+                        <svg class="d-block" id='scatterplot'></svg>
+                        <div id='scatterplot_tooltip'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-item">
+			<div class="container">
+				<div class="row">
+					<div class="col-6">
+						<h1><i>Where Do They Occur?</i></h1>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<p class="text-justify text-left text-wrap font-italic font-weight-bold">
+							Algal blooms occur all over the world, but are most prominent in heavily industrialized, developed areas such as 
+							the United States and Europe, as evidenced by the distribution of average measured chlorophyll concentrations below. 
+							Fertilizer is applied in large quantities to agricultural lands in these regions, leaching heavily into groundwater 
+							systems or rivers that carry nutrients to lakes or coastal oceans. The resulting algal blooms can manifest rapidly 
+							over large areas and become harmful to wildlife and humans, as well as contribute to degradation of water quality. 
+						</p>
+					</div>
+				</div>
+			</div>
+            <div class="container-fluid">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-12" align="center">
+                        <svg class="d-block" id='map'></svg>
+                        <div id='map_tooltip'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-item">
+			<div class="container">
+				<div class="row">
+					<div class="col-6">
+						<h1><i>What Does the Future Hold?</i></h1>
+					</div>
+					<div class="col-6">
+                        <label for="lake_select"><b>Select Lakes to Show:</b></label><br>
+                        <select name="lake_select" id="lake_select" class="custom-select" multiple size="3">
+                            <option value="Lake Erie" selected>Lake Erie</option>
+                            <option value="Lake Michigan" selected>Lake Michigan</option>
+                            <option value="Lake Superior" selected>Lake Superior</option>
+                            <option value="Lake Ontario" selected>Lake Ontario</option>
+                            <option value="Lake Huron" selected>Lake Huron</option>
+                        </select>
+                    </div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<p class="text-justify text-left text-wrap font-italic font-weight-bold">
+							While algal blooms have been occurring for decades, evidence suggests they are becoming more frequent, intense, and 
+							geographically widespread as a result of climate change and increasing pollution. Warming water temperatures, higher 
+							carbon dioxide levels, sea level rise, and changes in rainfall patterns may 
+							<a href="https://www.epa.gov/nutrientpollution/climate-change-and-harmful-algal-blooms">create favorable conditions 
+							for algae</a> that lead to more sustained bloom events, and a skyrocketing global population will continue to require 
+							food production on a massive scale. The plot below highlights general trends for the Great Lakes, where recent spikes 
+							in chlorophyll concentration (shown on a log scale) are particularly noticeable for Lake Erie and Lake Michigan. 
+						</p>
+					</div>
+				</div>
+			</div>
+            <div class="container-fluid">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-12" align="center">
+                        <svg class="d-block" id='time_series'></svg>
+                        <div id='time_series_tooltip'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<a class="carousel-control-prev" href="#slideshow" role="button" data-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+	</a>
+	<a class="carousel-control-next" href="#slideshow" role="button" data-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+	</a>
+</div>
+
+
+<script>
+
+var margin = {top: 30, bottom: 50, left: 60, right: 30};
+var height = window.innerHeight - margin.top - margin.bottom - 100;  //plot height
+var width = window.innerWidth - margin.left - margin.right - ((40 / 177) * window.innerWidth);  //plot width
+var DATASET, WORLD_TOPO;
+
+var labelMap = {'Total Phosphorus (mg/L)': 'TP',
+                'Total Nitrogen (mg/L)': 'TN',
+                'Dissolved Organic Carbon (mg/L)': 'DOC',
+                'Dissolved Oxygen (mg/L)': 'DO',
+                'Lake Volume (m3)': 'LakeVolume',
+                'Lake Surface Area (km2)': 'SurfaceArea',
+                'Maximum Lake Depth (m)': 'Depth.max',
+                'Maximum Secchi Depth Visibility (m)': 'Secchi',
+                'pH': 'pH'};
+
+async function init() {
+    const data = await d3.csv("./data/ChlaData.csv");
+    const world = await d3.json('./data/countries-50m.json');
+    DATASET = Array.from(data);
+    WORLD_TOPO = world;
+
+    update_scatterplot('Total Phosphorus (mg/L)');
+    update_map();
+    update_time_series(['Lake Erie', 'Lake Michigan', 'Lake Superior', 'Lake Ontario', 'Lake Huron']);
+
+	$('.carousel').carousel('pause');
+}
+
+</script>
+
+<script type="text/javascript" src="js/update_scatterplot.js"></script>
+<script type="text/javascript" src="js/update_map.js"></script>
+<script type="text/javascript" src="js/update_time_series.js"></script>
+
+</body>
+</html>
